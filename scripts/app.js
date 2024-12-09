@@ -5,32 +5,41 @@ import {APIKEY} from "./environment.js";
 // the navigator returns the geo location object and get current position returns the current position of the user
 
 // think of this an if else statement if the user accepts it is successful if not its an error
-navigator.geolocation.getCurrentPosition(success, errorFunc);
+// navigator.geolocation.getCurrentPosition(success, errorFunc);
 
 // example of a geo location object
-{
-    coords: {
-        latitude: 37.7749;
-        longitude: -122.4194;
+// {
+//     coords: {
+//         latitude: 37.7749;
+//         longitude: -122.4194;
+//     }
+// }
+
+// function success(position){
+//     let LAT = position.coords.latitude;
+//     let LONG = position.coords.longitude;
+//     apiCall();
+// }
+
+// function errorFunc(error){
+//     console.log(error.message);
+// }
+
+// async function apiCall(){
+//     const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${LAT}&lon=${LONG}&appid=${APIKEY}`);
+//     const data = await response.json();
+//     console.log(data);
+//     return data;
+// }
+
+navigator.geolocation.getCurrentPosition(function(position){
+    let lat = position.coords.latitude;
+    let lon = position.coords.longitude;
+    async function apiCall(){
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIKEY}`);
+        const data = await response.json();
+        console.log(data);
+        return data;
     }
-}
-
-function success(position){
-    console.log(position);
-    console.log(`our latitude is ${position.coords.latitude}`);
-    console.log(`our longitude is ${position.coords.longitude}`);
-    console.log("now we know where you are!");
-}
-
-function errorFunc(error){
-    console.log(error.message);
-}
-
-async function apiCall(){
-    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=37.9577&lon=-121.2908&appid=${APIKEY}`);
-    const data = await response.json();
-    console.log(data);
-    return data;
-}
-
-apiCall();
+    apiCall();
+});
